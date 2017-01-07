@@ -91,7 +91,8 @@ function editFc_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of editFc as text
 %        str2double(get(hObject,'String')) returns contents of editFc as a double
-
+DataValidator.IsANumber(hObject);
+guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
 function editFc_CreateFcn(hObject, eventdata, handles)
@@ -114,7 +115,10 @@ function editR1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of editR1 as text
 %        str2double(get(hObject,'String')) returns contents of editR1 as a double
-
+%DataValidator.IsANumber(hObject);
+ValidateToggledField(hObject, handles.editR2);
+guidata(hObject,handles);
+    
 
 % --- Executes during object creation, after setting all properties.
 function editR1_CreateFcn(hObject, eventdata, handles)
@@ -137,7 +141,8 @@ function editR2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of editR2 as text
 %        str2double(get(hObject,'String')) returns contents of editR2 as a double
-
+ValidateToggledField(hObject, handles.editR1);
+guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
 function editR2_CreateFcn(hObject, eventdata, handles)
@@ -160,7 +165,8 @@ function editC1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of editC1 as text
 %        str2double(get(hObject,'String')) returns contents of editC1 as a double
-
+ValidateToggledField(hObject, handles.editC2);
+guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
 function editC1_CreateFcn(hObject, eventdata, handles)
@@ -183,7 +189,8 @@ function editC2_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of editC2 as text
 %        str2double(get(hObject,'String')) returns contents of editC2 as a double
-
+ValidateToggledField(hObject, handles.editC1);
+guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
 function editC2_CreateFcn(hObject, eventdata, handles)
@@ -245,3 +252,12 @@ function textC2_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to textC2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
+
+
+function ValidateToggledField(hObject, hToggledObject)
+    if isempty(get(hObject,'String'))
+        set(hToggledObject, 'enable', 'on');
+        set(hObject,'string','insert value');
+    elseif (DataValidator.IsANumber(hObject))
+        set(hToggledObject, 'enable', 'off');
+    end
