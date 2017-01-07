@@ -13,6 +13,7 @@ classdef SKLPF
             multiValue = 1/(4*pi()^2*f^2*r*1000*c*10^(-6));
             [nr, nc] = SKLPF.CountValues(multiValue);
             mod = MSKLPF.AppendVariables(mod, nr*10^(-3), nc*10^6);
+            mod = SKLPF.CountTransferFnc(mod);
             calculatedModel = mod;
         end
         
@@ -24,6 +25,13 @@ classdef SKLPF
                r = randi([minR, maxR]);
                c = multiValue/r;
            end
+        end
+        
+        function newModel = CountTransferFnc(model)
+           newModel = model;
+           omega = 2*pi()*model.fc;
+           alpha = 1/model.c1 * ((model.r1 + model.r2)/(model.r1 * model.r2));
+           newModel.H = tf([omega^2], [1 alpha omega^2]);
         end
     end
     

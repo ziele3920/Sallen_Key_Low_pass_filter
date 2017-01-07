@@ -8,6 +8,7 @@ classdef MSKLPF
         r2;
         c1;
         c2;
+        H;
     end
     
     methods(Static)
