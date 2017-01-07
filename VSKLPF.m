@@ -208,10 +208,12 @@ function pushbuttonCalculate_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 set(hObject,'string','<html><FONT color="red">Kolotowy</Font><FONT color="green"> kote³</Font></html>');
-model = GetModel(handles.editFc, handles.editR1, handles.editR2,handles.editC1, handles.editC2);
-model = SKLPF.Calculate(model);
-FillOutputFields(model, handles.textFc, handles.textR1, handles.textR2, handles.textC1, handles.textC2);
-guidata(hObject,handles);
+if(ValidateFieldsCompletion(handles))
+    model = GetModel(handles.editFc, handles.editR1, handles.editR2,handles.editC1, handles.editC2);
+    model = SKLPF.Calculate(model);
+    FillOutputFields(model, handles.textFc, handles.textR1, handles.textR2, handles.textC1, handles.textC2);
+    guidata(hObject,handles);
+end
 
 
 % --------------------------------------------------------------------
@@ -288,5 +290,24 @@ function FillOutputFields(model, fc, r1, r2, c1, c2)
     set(c1,'string', model.c1);
     set(c2,'string', model.c2);
     
-        
+function retval = ValidateFieldsCompletion(handles)
+    str = 'insert value';
+    if(strcmp(get(handles.editFc, 'String'), str))
+        retval = false;
+        warndlg('Insert all necessary fields');
+        return;
+    end
+    if(strcmp(get(handles.editR1, 'String'), str) && strcmp(get(handles.editR2, 'String'), str))
+        retval = false;
+        warndlg('Insert all necessary fields');
+        return;
+    end
+    if(strcmp(get(handles.editC1, 'String'), str) && strcmp(get(handles.editC2, 'String'), str))
+        retval = false;
+        warndlg('Insert all necessary fields');
+        return;
+    end
+    retval = true;
+    
+
     
