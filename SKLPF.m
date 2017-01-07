@@ -11,8 +11,19 @@ classdef SKLPF
             mod = model;
             [f, r, c] = MSKLPF.GetData(mod);
             multiValue = 1/(4*pi()^2*f^2*r*1000*c*10^(-6));
-            mod = MSKLPF.AppendVariables(mod, multiValue, multiValue);
+            [nr, nc] = SKLPF.CountValues(multiValue);
+            mod = MSKLPF.AppendVariables(mod, nr*10^(-3), nc*10^6);
             calculatedModel = mod;
+        end
+        
+        function [r, c] = CountValues(multiValue)
+            c = 1;
+            minR = 10^3;
+            maxR = 5*10^5;
+           while(c > 5 * 10^(-5))
+               r = randi([minR, maxR]);
+               c = multiValue/r;
+           end
         end
     end
     
