@@ -22,7 +22,7 @@ function varargout = VSKLPF(varargin)
 
 % Edit the above text to modify the response to help VSKLPF
 
-% Last Modified by GUIDE v2.5 07-Jan-2017 17:48:25
+% Last Modified by GUIDE v2.5 07-Jan-2017 21:58:18
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -62,6 +62,7 @@ function VSKLPF_OpeningFcn(hObject, eventdata, handles, varargin)
     image(matlabImage);
     axis off;
     axis image;
+    
 % Choose default command line output for VSKLPF
 handles.output = hObject;
 
@@ -117,7 +118,6 @@ function editR1_Callback(hObject, eventdata, handles)
 %        str2double(get(hObject,'String')) returns contents of editR1 as a double
 %DataValidator.IsANumber(hObject);
 ValidateToggledField(hObject, handles.editR2);
-guidata(hObject,handles);
     
 
 % --- Executes during object creation, after setting all properties.
@@ -142,7 +142,6 @@ function editR2_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of editR2 as text
 %        str2double(get(hObject,'String')) returns contents of editR2 as a double
 ValidateToggledField(hObject, handles.editR1);
-guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
 function editR2_CreateFcn(hObject, eventdata, handles)
@@ -166,7 +165,6 @@ function editC1_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of editC1 as text
 %        str2double(get(hObject,'String')) returns contents of editC1 as a double
 ValidateToggledField(hObject, handles.editC2);
-guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
 function editC1_CreateFcn(hObject, eventdata, handles)
@@ -190,7 +188,6 @@ function editC2_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'String') returns contents of editC2 as text
 %        str2double(get(hObject,'String')) returns contents of editC2 as a double
 ValidateToggledField(hObject, handles.editC1);
-guidata(hObject,handles);
 
 % --- Executes during object creation, after setting all properties.
 function editC2_CreateFcn(hObject, eventdata, handles)
@@ -210,6 +207,11 @@ function pushbuttonCalculate_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbuttonCalculate (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+set(hObject,'string','<html><FONT color="red">Kolotowy</Font><FONT color="green"> kote³</Font></html>');
+model = GetModel(handles.editFc, handles.editR1, handles.editR2,handles.editC1, handles.editC2);
+model = SKLPF.Calculate(model);
+FillOutputFields(model, handles.textFc, handles.textR1, handles.textR2, handles.textC1, handles.textC2);
+guidata(hObject,handles);
 
 
 % --------------------------------------------------------------------
@@ -221,28 +223,28 @@ function Untitled_1_Callback(hObject, eventdata, handles)
 
 % --- Executes during object creation, after setting all properties.
 function textFc_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to textFc (see GCBO)
+% hObject    handle to label (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
-
+set(hObject,'string','wait for calculate');
 
 % --- Executes during object creation, after setting all properties.
 function textR1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to textR1 (see GCBO)
+% hObject    handle to label1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
 
 % --- Executes during object creation, after setting all properties.
 function textR2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to textR2 (see GCBO)
+% hObject    handle to label2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
 
 % --- Executes during object creation, after setting all properties.
 function textC1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to textC1 (see GCBO)
+% hObject    handle to label3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -261,3 +263,30 @@ function ValidateToggledField(hObject, hToggledObject)
     elseif (DataValidator.IsANumber(hObject))
         set(hToggledObject, 'enable', 'off');
     end
+
+    
+function retval = GetModel(fc, r1, r2, c1, c2)
+    retval = MSKLPF;
+    retval.fc = str2double(get(fc,'String'));
+    tmp = get(r1,'String');
+        if(strcmp('insert value', tmp))
+            retval.r2 = str2double(get(r2,'String'));
+        else
+            retval.r1 = str2double(tmp);
+        end
+    tmp = get(c1,'String');
+        if(strcmp('insert value', tmp))
+            retval.c2 = str2double(get(c2,'String'));
+        else
+            retval.c1 = str2double(tmp);
+        end
+   
+function FillOutputFields(model, fc, r1, r2, c1, c2)
+    set(fc,'string', model.fc);
+    set(r1,'string', model.r1);
+    set(r2,'string', model.r2);
+    set(c1,'string', model.c1);
+    set(c2,'string', model.c2);
+    
+        
+    
