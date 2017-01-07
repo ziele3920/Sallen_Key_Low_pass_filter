@@ -10,7 +10,8 @@ classdef SKLPF
             mod = MSKLPF;
             mod = model;
             [f, r, c] = MSKLPF.GetData(mod);
-            mod = MSKLPF.AppendVariables(mod, 6, 9);
+            multiValue = 1/(4*pi()^2*f^2*r*1000*c*10^(-6));
+            mod = MSKLPF.AppendVariables(mod, multiValue, multiValue);
             calculatedModel = mod;
         end
     end
