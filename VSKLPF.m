@@ -51,11 +51,17 @@ function VSKLPF_OpeningFcn(hObject, eventdata, handles, varargin)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to VSKLPF (see VARARGIN)
-axes(handles.axesImage);
-matlabImage = imread('./Sallen-Key_Lowpass.png');
-image(matlabImage);
-axis off;
-axis image;
+    axes(handles.axesImage);
+    matlabImage = imread('./Sallen-Key_Lowpass.png');
+    image(matlabImage);
+    axis off;
+    axis image;
+
+    axes(handles.axesBode);
+    matlabImage = imread('./minion.jpg');
+    image(matlabImage);
+    axis off;
+    axis image;
 % Choose default command line output for VSKLPF
 handles.output = hObject;
 
