@@ -20,7 +20,7 @@ classdef SKLPF
         function [r, c] = CountValues(multiValue)
             c = 1;
             minR = 10^3;
-            maxR = 5*10^5;
+            maxR = 5*10^4;
            while(c > 5 * 10^(-5))
                r = randi([minR, maxR]);
                c = multiValue/r;

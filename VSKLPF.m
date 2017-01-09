@@ -212,8 +212,9 @@ if(ValidateFieldsCompletion(handles))
     model = GetModel(handles.editFc, handles.editR1, handles.editR2,handles.editC1, handles.editC2);
     model = SKLPF.Calculate(model);
     FillOutputFields(model, handles.textFc, handles.textR1, handles.textR2, handles.textC1, handles.textC2);
-    b = bodeplot(model.H);
-    set(b,'Parent', handles.axesBode);
+    axes(handles.axesBode);
+    bodeplot(model.H);
+    grid on;
     guidata(hObject,handles);
 end
 
