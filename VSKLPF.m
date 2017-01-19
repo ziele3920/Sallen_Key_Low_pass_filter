@@ -211,7 +211,6 @@ function pushbuttonCalculate_Callback(hObject, eventdata, handles)
 set(hObject,'string','<html><FONT color="red">Kolotowy</Font><FONT color="green"> kote³</Font></html>');
 if(ValidateFieldsCompletion(handles))
     SetStatusInfo(handles, 'Counting');
-    drawnow();
     model = GetModel(handles.editFc, handles.editR1, handles.editR2,handles.editC1, handles.editC2);
     model = SKLPF.Calculate(model);
     FillOutputFields(model, handles.textFc, handles.textR1, handles.textR2, handles.textC1, handles.textC2);
@@ -318,6 +317,7 @@ function retval = ValidateFieldsCompletion(handles)
     
     function SetStatusInfo(handles, text)
         set(handles.textInfoStatus, 'string', text);
+        drawnow();
     
 
 
@@ -375,4 +375,11 @@ function pushbuttonFile_Callback(hObject, eventdata, handles)
 if(~DataValidator.IsAText(handles.editOutputFile) || ~DataValidator.IsAText(handles.editInputFile))
     return;
 end
-data = ReadFile(get(handles.editInputFile, 'string'));
+SetStatusInfo(handles, 'Loading from file...');
+dataList = ReadFile(get(handles.editInputFile, 'string'));
+SetStatusInfo(handles, 'Calculating...');
+for i=1:length(dataList)
+    dataList(i) = SKLPF.Calculate(dataList(i));
+end;
+SetStatusInfo(handles, 'Idle...');
+
