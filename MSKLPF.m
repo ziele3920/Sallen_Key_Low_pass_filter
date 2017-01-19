@@ -11,15 +11,15 @@ classdef MSKLPF
         H;
     end
     
-    methods(Static)
+    methods
         
         function [f, r, c] = GetData(mod) 
             f = mod.fc;
-            r = MSKLPF.GetAssignedValue(mod.r1, mod.r2);
-            c = MSKLPF.GetAssignedValue(mod.c1, mod.c2);      
+            r = mod.GetAssignedValue(mod.r1, mod.r2);
+            c = mod.GetAssignedValue(mod.c1, mod.c2);      
         end
         
-        function retval = GetAssignedValue(v1, v2)
+        function retval = GetAssignedValue(mod, v1, v2)
             if(isempty(v1))
                 retval = v2;
             else

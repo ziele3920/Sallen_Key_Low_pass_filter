@@ -7,14 +7,12 @@ classdef SKLPF
     
     methods(Static)
         function calculatedModel = Calculate(model) 
-            mod = MSKLPF;
-            mod = model;
-            [f, r, c] = MSKLPF.GetData(mod);
+            [f, r, c] = model.GetData();
             multiValue = 1/(4*pi()^2*f^2*r*1000*c*10^(-6));
             [nr, nc] = SKLPF.CountValues(multiValue);
-            mod = MSKLPF.AppendVariables(mod, nr*10^(-3), nc*10^6);
-            mod = SKLPF.CountTransferFnc(mod);
-            calculatedModel = mod;
+            model = model.AppendVariables(nr*10^(-3), nc*10^6);
+            model = SKLPF.CountTransferFnc(model);
+            calculatedModel = model;
         end
         
         function [r, c] = CountValues(multiValue)
