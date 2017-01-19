@@ -18,6 +18,17 @@ classdef DataValidator
             retval = true;
         end;
         
+        function retval = IsAText(src)
+            str=get(src,'String');
+            if (isempty(str) || strcmp(str, 'insert value'))
+                set(src,'string','insert value');
+                warndlg('Insert correct file name');
+                retval = false;
+                return;
+            end;
+            retval = true;
+        end;
+        
         
     end
     

@@ -22,7 +22,7 @@ function varargout = VSKLPF(varargin)
 
 % Edit the above text to modify the response to help VSKLPF
 
-% Last Modified by GUIDE v2.5 07-Jan-2017 21:58:18
+% Last Modified by GUIDE v2.5 19-Jan-2017 21:06:23
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -62,6 +62,7 @@ function VSKLPF_OpeningFcn(hObject, eventdata, handles, varargin)
     image(matlabImage);
     axis off;
     axis image;
+
     
 % Choose default command line output for VSKLPF
 handles.output = hObject;
@@ -209,6 +210,8 @@ function pushbuttonCalculate_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 set(hObject,'string','<html><FONT color="red">Kolotowy</Font><FONT color="green"> kote³</Font></html>');
 if(ValidateFieldsCompletion(handles))
+    SetStatusInfo(handles, 'Counting');
+    drawnow();
     model = GetModel(handles.editFc, handles.editR1, handles.editR2,handles.editC1, handles.editC2);
     model = SKLPF.Calculate(model);
     FillOutputFields(model, handles.textFc, handles.textR1, handles.textR2, handles.textC1, handles.textC2);
@@ -216,6 +219,7 @@ if(ValidateFieldsCompletion(handles))
     bodeplot(model.H);
     grid on;
     guidata(hObject,handles);
+    SetStatusInfo(handles, 'Idle...');
 end
 
 
@@ -312,5 +316,63 @@ function retval = ValidateFieldsCompletion(handles)
     end
     retval = true;
     
-
+    function SetStatusInfo(handles, text)
+        set(handles.textInfoStatus, 'string', text);
     
+
+
+
+function editInputFile_Callback(hObject, eventdata, handles)
+% hObject    handle to editInputFile (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editInputFile as text
+%        str2double(get(hObject,'String')) returns contents of editInputFile as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function editInputFile_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editInputFile (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function editOutputFile_Callback(hObject, eventdata, handles)
+% hObject    handle to editOutputFile (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of editOutputFile as text
+%        str2double(get(hObject,'String')) returns contents of editOutputFile as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function editOutputFile_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to editOutputFile (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on button press in pushbuttonFile.
+function pushbuttonFile_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbuttonFile (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+if(~DataValidator.IsAText(handles.editOutputFile) || ~DataValidator.IsAText(handles.editInputFile))
+    return;
+end
+data = ReadFile(get(handles.editInputFile, 'string'));
