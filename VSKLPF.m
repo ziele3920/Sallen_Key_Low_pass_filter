@@ -345,7 +345,7 @@ end
 
 
 
-function editOutputFile_Callback(hObject, eventdata, handles)
+function editOutputFile_Callback(hObject, eventdata, ~)
 % hObject    handle to editOutputFile (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -381,5 +381,6 @@ SetStatusInfo(handles, 'Calculating...');
 for i=1:length(dataList)
     dataList(i) = SKLPF.Calculate(dataList(i));
 end;
+WriteFile(get(handles.editOutputFile, 'string'), dataList);
 SetStatusInfo(handles, 'Idle...');
 
