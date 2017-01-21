@@ -9,9 +9,10 @@ classdef DataValidator
         
         function retval = IsANumber(src)
             str=get(src,'String');
-            if isempty(str2num(str))
+            number = str2num(str);
+            if (isempty(number) || number <= 0)
                 set(src,'string','insert value');
-                warndlg('Input must be numerical');
+                warndlg('Input must be positive number');
                 retval = false;
                 return;
             end;

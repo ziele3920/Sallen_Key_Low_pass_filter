@@ -16,12 +16,20 @@ classdef SKLPF
         end
         
         function [r, c] = CountValues(multiValue)
-            c = 1;
+            c = 1; t = 0;
             minR = 10^3;
             maxR = 5*10^4;
-           while(c > 5 * 10^(-5))
+            minC = 5*10^(-5);
+            maxTime = 10;
+            
+           while(c > 5 * minC)
+               tic
                r = randi([minR, maxR]);
                c = multiValue/r;
+               t = t + toc;
+               if(t > maxTime)
+                   error('max time elapsed');
+               end
            end
         end
         

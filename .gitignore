@@ -12,3 +12,8 @@ slprj/
 
 # Session info
 octave-workspace
+
+*.aux
+*.log
+*.gz
+*.toc
