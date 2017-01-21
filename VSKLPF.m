@@ -222,6 +222,7 @@ if(ValidateFieldsCompletion(handles))
     FillOutputFields(model, handles.textFc, handles.textR1, handles.textR2, handles.textC1, handles.textC2);
     axes(handles.axesBode);
     bodeplot(model.H);
+    bodeplot(model.H);
     grid on;
     guidata(hObject,handles);
     SetStatusInfo(handles, 'Idle...');

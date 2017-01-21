@@ -45,15 +45,108 @@
 
 \section{Ogólny mechanizm działania}
 
-	
+	Mechanizm działania programu opiera się o przepływ danych pomiędzy interfejsem
+	użytkownika stanowiącym widok aplikacji a jednostką obliczeniową. 
+	Wartości wprowadzane przez użytkownika są wstępnie walidowane względem typu
+	wprowadzonych danych przez moduł walidacji danych a następnie zostają przekazane
+	do jednostki obliczeniowej.
+	Jednostka obliczeniowa implementuje algorytm pozwalający
+	wyznaczyć wartości elementów pasywnych filtru po wykonaniu, którego przekazuje
+	obliczone wartości do widoku w celu prezentacji ich użytkownikowi w postaci liczbowej
+	oraz graficznej (charakterystyki Bodego). \\
+	Możliwe jest również skorzystanie z opcji pracowania na plikach .xls gdzie zastępowany 
+	jest fragment pobierania danych od użytkownika i prezentacji ich użytkownikowi  poprzez
+	moduł wczytujący dane z pliku i zapisujący wyniki do pliku.
 
 \section{Opis funkcji dodatkowych}
+
+	\begin{enumerate}
+		\item Klasa "Data Validator" posiadająca funkcje:
+		\begin{itemize}
+			\item retval = IsANumber(src) - funkcja sprawdza, czy w polu tekstowym 
+			reprezentowanym przez uchwyt "src" występuje dodatnia wartość liczbowa.
+			W przypadku spełnienia tego warunku zwraca wartość logiczną true, w przeciwnym
+			wypadku wartość false;
+			\item retval = IsAText(src) - funkcja sprawdza, czy w polu tekstowym 
+			reprezentowanym przez uchwyt "src" występuje wprowadzony przez użytkownika
+			niepusty ciąg znaków i różny od "insert value". W przypadku spełnienia tych
+			warunków zwraca wartość logiczną true, w przeciwnym
+			wypadku wartość false;
+		\end{itemize}
+		
+		\item Klasa "MSKLPF" reprezentuje model danych przechowujący wartości 
+		charakteryzujące filtr:
+			\begin{itemize}
+				\item fc - częstotliwość graniczna filtru
+				\item r1 - wartość rezystancji opornika R1 [kOhm]
+				\item r2 - wartość rezystancji opornika R2 [kOhm]
+				\item c1 - wartość pojemności kondensatora C1 [uF]
+				\item c2 - wartość pojemności kondensatora C2 [uF]
+				\item H - współczynniki transmitancji filtru
+			\end{itemize}
+		
+		\item Klasa "SKLPF" posiadająca funkcje:
+		\begin{itemize}
+			\item calculatedModel = Calculate(model) - oblicza wartość elementów
+			filtru na podstawie częściowo uzupełnionego modelu (argument model) 
+			reprezentowanego przez klasę MSKLPF. Zwraca model uzupełniony o
+			obliczone wartości.
+		\end{itemize}
+		
+		\item list = ReadFile(fileName) - funkcja wczytuje z pliku fileName dane 
+		filtrów i zwraca wektor modeli (MSKLPF) filtrów.
+		
+		\item function WriteFile(fileName, data ) - funkcja zapisuje do pliku o nazwie
+		fileName dane filtrów wyłuskane z modeli znajdujących się w wektorze data.
+		
+	\end{enumerate}
+
 \section{Najtrudniejsze elementy w realizacji programu}
+
+	Najtrudniejszym elementem w realizacji programu okazała się walidacja danych
+	wprowadzanych przez użytkownika, ponieważ
+	należało rozpatrzeć wszystkie możliwości niekompatybilności tych danych z 
+	api programu i ograniczeniami fizycznymi (np. niemożność wykonania kondensatora 
+	o ujemnej pojemności).
+
 \section{Najciekawsze elementy programu}
+
+	Najciekawszymi elementami programu są klasy MSKLPF, SKLPF, VSKLPF gdyż
+	są one klasami w których model danych został oddzielony od logiki oraz widoku
+	programu. 
+
 \section{Obsługa programu}
+
+
+
 \section{Format danych}
+
+	Dane wejściowe programu są liczbami dodatnimi opisującymi filtr:
+	\begin{itemize}
+				\item fc - częstotliwość graniczna filtru
+				\item r1 - wartość rezystancji opornika R1 [kOhm]
+				\item r2 - wartość rezystancji opornika R2 [kOhm]
+				\item c1 - wartość pojemności kondensatora C1 [uF]
+				\item c2 - wartość pojemności kondensatora C2 [uF]
+	\end{itemize}
+	
+	podczas wprowadzania danych należy pamiętać, że należy podać wartości 
+	fc, oraz po jednej ze zbiorów {r1, r2} , {c1, c2}. Program posiada zabezpieczenia
+	przez niepoprawnym wprowadzeniu danych.  \\
+	W przypadku wprowadzania danych z pliku .xls należy utworzyć 5 kolumn, które 
+	reprezentują wartości opisujące filtr w kolejności wyżej wymienionej.
+	Wartości elementów do obliczenia muszą w pliku wynosić 0.
+	Plik z danymi wyjściowymi reprezentowany jest w podobnie w pięciu kolumnach
+	jak plik wejściowy z tą różnicą, że występuje wiersz nagłówkowy opisujący kolumny.
+
 \section{Możliwy rozwój projektu}
 
+	\begin{enumerate}
+		\item Dodanie opcji generowania charakterystyk Bodego dla wprowadzonych przez 
+		użytkownika kompletnych danych opisujących filtr.
+		\item Wprowadzenie algorytmu doboru elementów pasywnych filtru spośród wartości 
+		należących do istniejących szeregów np. E24.
+	\end{enumerate}
 
 \end{document}
 
