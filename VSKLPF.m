@@ -22,7 +22,7 @@ function varargout = VSKLPF(varargin)
 
 % Edit the above text to modify the response to help VSKLPF
 
-% Last Modified by GUIDE v2.5 19-Jan-2017 21:06:23
+% Last Modified by GUIDE v2.5 22-Jan-2017 11:21:32
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -208,7 +208,7 @@ function pushbuttonCalculate_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbuttonCalculate (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-set(hObject,'string','<html><FONT color="red">Kolotowy</Font><FONT color="green"> kote³</Font></html>');
+%set(hObject,'string','<html><FONT color="red">Kolotowy</Font><FONT color="green"> kote³</Font></html>');
 if(ValidateFieldsCompletion(handles))
     SetStatusInfo(handles, 'Counting');
     model = GetModel(handles.editFc, handles.editR1, handles.editR2,handles.editC1, handles.editC2);
@@ -220,9 +220,8 @@ if(ValidateFieldsCompletion(handles))
        return;
     end
     FillOutputFields(model, handles.textFc, handles.textR1, handles.textR2, handles.textC1, handles.textC2);
-    axes(handles.axesBode);
-    bodeplot(model.H);
-    bodeplot(model.H);
+    bodeplot(handles.axesBode, model.H);
+    bodeplot(handles.axesBode, model.H);
     grid on;
     guidata(hObject,handles);
     SetStatusInfo(handles, 'Idle...');
@@ -385,6 +384,7 @@ end
 SetStatusInfo(handles, 'Loading from file...');
 dataList = ReadFile(get(handles.editInputFile, 'string'));
 SetStatusInfo(handles, 'Calculating...');
+calculatedModels = [];
 for i=1:length(dataList)
     try
         dataList(i) = SKLPF.Calculate(dataList(i));
@@ -396,4 +396,3 @@ end
 SetStatusInfo(handles, 'Write results to file...');
 WriteFile(get(handles.editOutputFile, 'string'), dataList);
 SetStatusInfo(handles, 'Idle...');
-

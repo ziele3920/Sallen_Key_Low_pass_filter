@@ -9,12 +9,14 @@
 \usepackage{color}
 \usepackage{mathtools}
 
+\usepackage[hidelinks]{hyperref}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%STRONA TYTULOWA%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{\Huge \textbf{Sallen-Key Low-pass Filter\\[0.3in]} 
   \huge Informatyka \\[0.2in]
   \LARGE Dokumentacja projektu
 }
-\date{21.01.2017}
+\date{22.01.2017}
 \author{
  	\quad	\\
   Arkadiusz Ziółkowski\\
@@ -114,12 +116,75 @@
 	Najciekawszymi elementami programu są klasy MSKLPF, SKLPF, VSKLPF gdyż
 	są one klasami w których model danych został oddzielony od logiki oraz widoku
 	programu. 
+	Ponadto bardzo przydatnym a zarazem użytecznym elementem aplikacji jest 
+	blok informujący użytkownika o aktualnym stanie programu (np. bezczynności,
+	przetwarzaniu) widoczny w dolnym, prawym rogu okna aplikacji.
 
 \section{Obsługa programu}
 
+	Na rysunku nr. \ref{fig:bloki} zostało przedstawione okno aplikacji, na którym opisano 
+	najważniejsze bloki (zaznaczone czerwonymi ramkami).
+			\begin{figure}[!htbp]
+ 				\centering
+					 \includegraphics[width=\textwidth]{../Pictures/i1.png}
+ 					 \caption{Podział okna programu na bloki główne.}
+					 \label{fig:bloki}
+			\end{figure}
 
+	\subsection{Wprowadzanie danych przez użytkownika}
+		Aby policzyć wartości elementów pasywnych (opór rezystora i pojemność kondensatora)
+		dla pojedynczego układu należy:
+		\begin{enumerate}
+			\item Wprowadzić w pole fc bloku danych wejściowych wartość oczekiwanej
+			częstotliwości granicznej filtru wyrażoną w Hz.
+			\item Wprowadzić w pole R1 albo R2 bloku danych wejściowych wartość rezystancji
+			wybranego rezystora wyrażoną w k$\Omega$ . W przypadku wprowadzenia wartości 
+			dla jednego z rezystorów pole odpowiadające drugiemu rezystorowi staje się
+		 	nieaktywne, aby odblokować to pole należy usunąć wartość z uzupełnionego pola.
+		 	\item Wprowadzić w pole C1 albo C2 bloku danych wejściowych wartość pojemności
+			wybranego kondensatora wyrażoną w uF. W przypadku wprowadzenia wartości 
+			dla jednego z kondensatorów pole odpowiadające drugiemu kondensatorowi staje się
+		 	nieaktywne, aby odblokować to pole należy usunąć wartość z uzupełnionego pola.
+		 	\item Kliknąć przycisk "Calculate" rozpoczynający proces obliczeniowy, po 
+		 	zakończeniu którego wartości wszystkich elementów pasywnych układu zostają
+		 	wyświetlone w bloku danych wyjściowych, a w bloku rysowania charakterystyk
+		 	wyświetlone zostają charakterystyki amplitudowo-fazowe dla danego układu.
+		\end{enumerate}		
 
+		Na rysunku nr. \ref{fig:dane} przedstawiony został widok aplikacji po 
+		wykonaniu obliczeń dla danych wprowadzonych przez użytkownika.
+
+		\pagebreak				
+				
+		\begin{figure}[!htbp]
+ 				\centering
+					 \includegraphics[width=\textwidth]{../Pictures/i2.png}
+ 					 \caption{Widok okna po zakończeniu obliczeń na podstawie danych 
+ 					 wprowadzonych przez użytkownika.}
+					 \label{fig:dane}
+			\end{figure}
+			
+
+	\subsection{Wprowadzanie danych z pliku}
+	
+		Aby policzyć wartości elementów pasywnych dla większej ilości układów
+		do programu można wprowadzić plik w formacie .xls gdzie pojedynczy układ jest 
+		reprezentowany przez pojedynczy wiersz zgodnie z opisem w rozdziale nr.
+		\ref{sec:format}. Aby tego dokonać należy:
+		
+		\begin{enumerate}
+			\item Przygotować plik z danymi wejściowymi zgodnie z opisanym formatem
+			danych i umieścić go w katalogu uruchomieniowym aplikacji.
+			\item Wprowadzić nazwę pliku z danymi wejściowymi
+			w pole "Input file name" w oknie aplikacji.
+			\item Wprowadzić nazwę pliku do którego zapisane zostaną dane wyjściowe 
+			w pole "Otput file name" w oknie aplikacji.
+			\item Kliknąć przycisk "Calculate my file" rozpoczynający proces wczytania 
+			danych, dokonania obliczeń i zapisania wyników do pliku.
+		\end{enumerate}
+			
 \section{Format danych}
+	\label{sec:format}
 
 	Dane wejściowe programu są liczbami dodatnimi opisującymi filtr:
 	\begin{itemize}
@@ -131,13 +196,26 @@
 	\end{itemize}
 	
 	podczas wprowadzania danych należy pamiętać, że należy podać wartości 
-	fc, oraz po jednej ze zbiorów {r1, r2} , {c1, c2}. Program posiada zabezpieczenia
+	fc, oraz po jednej ze zbiorów \{r1, r2\}, \{c1, c2\}. Program posiada zabezpieczenia
 	przez niepoprawnym wprowadzeniu danych.  \\
 	W przypadku wprowadzania danych z pliku .xls należy utworzyć 5 kolumn, które 
 	reprezentują wartości opisujące filtr w kolejności wyżej wymienionej.
 	Wartości elementów do obliczenia muszą w pliku wynosić 0.
-	Plik z danymi wyjściowymi reprezentowany jest w podobnie w pięciu kolumnach
-	jak plik wejściowy z tą różnicą, że występuje wiersz nagłówkowy opisujący kolumny.
+	Każdy kolejny wiersz traktowany jest jako kolejny układ do obliczenia.
+	Plik z danymi wyjściowymi reprezentowany jest podobnie jak plik wejściowy
+	 w pięciu kolumnach
+	 z tą różnicą, że występuje wiersz nagłówkowy opisujący kolumny.
+	 Wiersze niespełniające powyższych kryteriów będę przez program ignorowane.
+	 Jeżeli w pliku wystąpi więcej niż 5 kolumn cały plik zostanie zignorowany.
+	 Poprawny format danych wejściowych i wyjściowych w plikach został przedstawiony
+	 na rysunku nr. \ref{fig:plik}.
+	 
+	 		\begin{figure}[!htbp]
+ 				\centering
+					 \includegraphics[width=\textwidth]{../Pictures/plik.png}
+ 					 \caption{Format danych w pliku wejściowym i wyjściowym.}
+					 \label{fig:plik}
+			\end{figure}
 
 \section{Możliwy rozwój projektu}
 
